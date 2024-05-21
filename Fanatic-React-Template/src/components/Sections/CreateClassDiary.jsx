@@ -38,10 +38,44 @@ const CreateClassDiary = () => {
         const result = await response.json();
       
         if (response.ok) {
+            const sentences = result.content.match(/[^.!?]+[.!?]/g).map((sentence, index) => (
+                <p  key={index}><strong class="fontLight">{sentence}</strong><br/><br/></p> 
+            ));
             setFeedback({
                 title: result.title,
-                content: result.content
+                content: sentences
               });
+              
+        } 
+        else {
+            console.error(`불러오기 실패 : ${result.message}`);
+        }
+    } catch (error) {
+        console.error('Error fetching date list:', error);
+    }
+};
+
+const handleSubmit2 = () => {
+    fetchSendDiary();
+  };
+
+const fetchSendDiary = async () => {
+    try {
+        const response = await fetch(`${process.env.REACT_APP_Server_IP}/??/`, {
+            method: 'POST',
+            headers: {
+                "Authorization": `Bearer ${cookie.access_token}`, 
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ 
+                title: feedback.title,
+                content: feedback.content
+            })
+        });
+        const result = await response.json();
+      
+        if (response.ok) {
+            navigate("/classDiary");
         } 
         else {
             console.error(`불러오기 실패 : ${result.message}`);
@@ -69,7 +103,7 @@ const CreateClassDiary = () => {
         </FeedbackBox>
         <ButtonContainer>
           <SubmitButton onClick={handleSubmit}>일기 생성</SubmitButton>
-          <SubmitButton onClick={handleSubmit}>업로드</SubmitButton>
+          <SubmitButton onClick={handleSubmit2}>업로드</SubmitButton>
         </ButtonContainer>
       </CoursesBox>
     </ClassroomWrapper>
