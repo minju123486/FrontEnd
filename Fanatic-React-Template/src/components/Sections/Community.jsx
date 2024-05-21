@@ -86,6 +86,7 @@ const ChatComponent = ({ chatRoomName, messages, setMessages, inputValue, setInp
 
 export default function Community() {
     const { user, cookie } = useAuth();
+    const [showPopularPosts, setShowPopularPosts] = useState(true);
     const [activeGrade, setActiveGrade] = useState('grade1');
     const [popularPosts, setPopularPosts] = useState([]);
     const [freePosts, setFreePosts] = useState([]);
@@ -102,6 +103,13 @@ export default function Community() {
         grade3: [],
         grade4: []
     });
+
+    const [diaryPosts, setDiaryPosts] = useState([
+        { id: 1, title: "Diary Post 1", author: "Author 1", preview: "Preview content 1", image: ReactImage, like: 10, watch: 50, date: "2023.01.01", comments: 5 },
+        { id: 2, title: "Diary Post 2", author: "Author 2", preview: "Preview content 2", image: ReactImage, like: 20, watch: 60, date: "2023.02.01", comments: 10 },
+        { id: 3, title: "Diary Post 3", author: "Author 3", preview: "Preview content 3", image: ReactImage, like: 30, watch: 70, date: "2023.03.01", comments: 15 },
+        { id: 4, title: "Diary Post 4", author: "Author 4", preview: "Preview content 4", image: ReactImage, like: 40, watch: 80, date: "2023.04.01", comments: 20 },
+    ]);
 
     const handleGradeChange = grade => setActiveGrade(grade);
     
@@ -253,25 +261,57 @@ export default function Community() {
         }
     };
 
+    const handleTabClick = (tab) => {
+        setShowPopularPosts(tab === 'popular');
+    };
+
     return (
         <Container>
-            <CardTitle>인기 게시물</CardTitle>
-            <CardsContainer>
-    {popularPosts.map(post => (
-        <PopularPostCard
-            key={post.id}
-            id={post.id}
-            title={post.title}
-            author={post.author}
-            preview={post.content}
-            image={ReactImage}
-            like={post.like}
-            watch={post.watch}
-            date={`${post.year}.${post.month}.${post.day}`}
-            comments={post.comment_number}
-        />
-    ))}
-</CardsContainer>
+            <TabsContainer>
+                <Tab active={showPopularPosts} onClick={() => handleTabClick('popular')}>인기 게시물</Tab>
+                <Tab active={!showPopularPosts} onClick={() => handleTabClick('diary')}>일기</Tab>
+            </TabsContainer>
+            {showPopularPosts ? (
+                <div>
+                    
+                    <CardsContainer>
+                        {popularPosts.map(post => (
+                            <PopularPostCard
+                                key={post.id}
+                                id={post.id}
+                                title={post.title}
+                                author={post.author}
+                                preview={post.content}
+                                image={ReactImage}
+                                like={post.like}
+                                watch={post.watch}
+                                date={`${post.year}.${post.month}.${post.day}`}
+                                comments={post.comment_number}
+                            />
+                        ))}
+                    </CardsContainer>
+                </div>
+            ) : (
+                <div>
+                    
+                    <CardsContainer>
+                        {diaryPosts.map(post => (
+                            <PopularPostCard
+                                key={post.id}
+                                id={post.id}
+                                title={post.title}
+                                author={post.author}
+                                preview={post.preview}
+                                image={post.image}
+                                like={post.like}
+                                watch={post.watch}
+                                date={post.date}
+                                comments={post.comments}
+                            />
+                        ))}
+                    </CardsContainer>
+                </div>
+            )}
             <HorizontalRule />
             <MainContent>
                 <LeftColumn>
@@ -387,6 +427,23 @@ const Container = styled.div`
     background-color: #EFF8F3;
     display: flex;
     flex-direction: column;
+`;
+
+const TabsContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+`;
+
+const Tab = styled.div`
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    color: ${props => props.active ? '#4CAF50' : 'black'};
+    border-bottom: ${props => props.active ? '2px solid #4CAF50' : 'none'};
+    &:hover {
+        color: #45a049;
+    }
 `;
 
 /* 카드 컨테이너 */
