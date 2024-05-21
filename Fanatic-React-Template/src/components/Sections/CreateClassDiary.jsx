@@ -13,6 +13,7 @@ const CreateClassDiary = () => {
 
   const [prompt, setPrompt] = useState("");
   const [feedback, setFeedback] = useState({ title: "", content: "" });
+  const [contentt, setContentt] = useState("");
 
   const handleInputChange = (e) => {
     setPrompt(e.target.value);
@@ -25,7 +26,7 @@ const CreateClassDiary = () => {
 
   const fetchSendprompt = async () => {
     try {
-        const response = await fetch(`${process.env.REACT_APP_Server_IP}/??/`, {
+        const response = await fetch(`${process.env.REACT_APP_Server_IP}/study_diary/`, {
             method: 'POST',
             headers: {
                 "Authorization": `Bearer ${cookie.access_token}`, 
@@ -45,7 +46,7 @@ const CreateClassDiary = () => {
                 title: result.title,
                 content: sentences
               });
-              
+              setContentt(result.content);
         } 
         else {
             console.error(`불러오기 실패 : ${result.message}`);
@@ -61,7 +62,7 @@ const handleSubmit2 = () => {
 
 const fetchSendDiary = async () => {
     try {
-        const response = await fetch(`${process.env.REACT_APP_Server_IP}/??/`, {
+        const response = await fetch(`${process.env.REACT_APP_Server_IP}/classdaily_save/`, {
             method: 'POST',
             headers: {
                 "Authorization": `Bearer ${cookie.access_token}`, 
@@ -69,7 +70,7 @@ const fetchSendDiary = async () => {
             },
             body: JSON.stringify({ 
                 title: feedback.title,
-                content: feedback.content
+                content: contentt
             })
         });
         const result = await response.json();

@@ -24,7 +24,7 @@ const ClassDiary = () => {
 
     const fetchDateList = async () => {
         try {
-            const response = await fetch(`${process.env.REACT_APP_Server_IP}/daily_view/`, {
+            const response = await fetch(`${process.env.REACT_APP_Server_IP}/classdaily_view/`, {
                 method: 'GET',
                 headers: {
                     "Authorization": `Bearer ${cookie.access_token}`, 

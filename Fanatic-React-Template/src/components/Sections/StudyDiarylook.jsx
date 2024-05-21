@@ -44,7 +44,10 @@ const StudyDiarylook = () => {
       
         if (response.ok) {
             setTitle(result.title);
-            setContent(result.content);
+            const sentences = result.content.match(/[^.!?]+[.!?]/g).map((sentence, index) => (
+              <p  key={index}><strong class="fontLight">{sentence}</strong><br/><br/></p> 
+          ));
+            setContent(sentences);
         } 
         else {
             console.error(`불러오기 실패 : ${result.message}`);
@@ -54,9 +57,7 @@ const StudyDiarylook = () => {
       }
     };
 
-    const sentences = {content}.match(/[^.!?]+[.!?]/g).map((sentence, index) => (
-        <p  key={index}><strong class="fontLight">{sentence}</strong><br/><br/></p> 
-    ));
+    
 
 
     return(
@@ -71,7 +72,7 @@ const StudyDiarylook = () => {
                         <FeedbackContent>
                             <h3 class="fontMedium">{title}</h3>
                             <Grayunderline />
-                            {sentences}
+                            {content}
                         </FeedbackContent>
                     </FeedbackBox>
                     <Button onClick={handleBack}><h4>확인</h4></Button>

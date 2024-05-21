@@ -20,7 +20,7 @@ const ClassDiarylook = () => {
 
     
     const handleBack = () => {
-        navigate(`/clssdiary`);
+        navigate(`/classDiary`);
     };
 
     useEffect(() => {
@@ -30,7 +30,7 @@ const ClassDiarylook = () => {
 
     const fetchstudydiarylook = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_Server_IP}/daily_look/`, {
+        const response = await fetch(`${process.env.REACT_APP_Server_IP}/classdaily_look/`, {
             method: 'POST',
             headers: {
                 "Authorization": `Bearer ${cookie.access_token}`,
@@ -44,6 +44,7 @@ const ClassDiarylook = () => {
       
         if (response.ok) {
             setTitle(result.title);
+            console.log(result.content)
             const sentences = result.content.match(/[^.!?]+[.!?]/g).map((sentence, index) => (
                 <p  key={index}><strong class="fontLight">{sentence}</strong><br/><br/></p> 
             ));
