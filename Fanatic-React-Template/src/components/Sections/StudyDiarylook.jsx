@@ -18,7 +18,7 @@ const StudyDiarylook = () => {
     const [title, setTitle] = useState("");
     const [content, setContent] = useState("");
 
-
+    
     const handleBack = () => {
         navigate(`/studyDiary`);
     };
@@ -54,6 +54,10 @@ const StudyDiarylook = () => {
       }
     };
 
+    const sentences = {content}.match(/[^.!?]+[.!?]/g).map((sentence, index) => (
+        <p  key={index}><strong class="fontLight">{sentence}</strong><br/><br/></p> 
+    ));
+
 
     return(
         <Wrapper>
@@ -65,9 +69,9 @@ const StudyDiarylook = () => {
 
                     <FeedbackBox>
                         <FeedbackContent>
-                            <Title>{title}</Title>
-                            <Underline />
-                            {content}
+                            <h3 class="fontMedium">{title}</h3>
+                            <Grayunderline />
+                            {sentences}
                         </FeedbackContent>
                     </FeedbackBox>
                     <Button onClick={handleBack}><h4>확인</h4></Button>
@@ -99,6 +103,7 @@ const Content = styled.div`
   align-items: center;
   border-radius:15px;
   margin-bottom: 40px;
+  margin-top:50px;
 `;
 
 const Content_sec = styled.div`
@@ -159,18 +164,19 @@ const HistBox = styled.div`
 
 const FeedbackBox = styled.div`
   width: 850px;
-  height: 80%px;
+  height: 560px;
   justify-content: center;
   background-color: #FBFAFA;
   border: 1px solid #ccc;
   border-radius: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 10px;
+  margin-bottom:20px;
 `;
 
 const FeedbackContent = styled.div`
   overflow-y: auto;
-  height:200px;
+  height:530px;
 `;
 
 const Button = styled.button`
