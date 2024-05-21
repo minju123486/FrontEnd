@@ -20,6 +20,7 @@ import Feedbacklook from "./components/Sections/Feedbacklook.jsx";
 import Chatting from "./components/Sections/Chatting.jsx";
 import StudyDiary from "./components/Sections/StudyDiary.jsx";
 import ClassDiary from "./components/Sections/ClassDiary.jsx";
+import StudyDiarylook from "./components/Sections/StudyDiarylook.jsx";
 
 // Member
 import Login from "./components/Member/Login.jsx";
@@ -61,7 +62,8 @@ export default function App() {
           <Route path="/chatting" element={<Chatting />} />
           <Route path="/studyDiary" element={<StudyDiary/>} />
           <Route path="/classDiary" element={<ClassDiary/>} />
-        </Routes>         
+          <Route path="/studyDiarylook" element={<StudyDiarylook/>} />
+        </Routes>
       </AuthProvider>
       <Footer />
     </Router>
