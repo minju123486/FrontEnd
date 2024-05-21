@@ -6,6 +6,8 @@ import { useParams } from 'react-router-dom';
 import timeloding from '../../assets/img/loding/time.gif';
 import isodaloding from '../../assets/img/loding/isodaloding.png';
 import { useAuth } from '../Member/AuthContext';
+import { useNavigate } from "react-router-dom";
+import { IoBulbOutline } from "react-icons/io5";
 
 const PageContainer = styled.div`
   padding-top: 120px;
@@ -24,7 +26,12 @@ const Section = styled.div`
   border: 1px solid #ccc; /* 섹션 별 구분선 */
   padding: 20px; /* 내부 패딩 */
   box-shadow: 0px 2px 4px rgba(0,0,0,0.1); /* 경계가 더 명확하도록 그림자 추가 */
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
+
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -42,7 +49,7 @@ const Divider = styled.div`
 const Label = styled.span`
   font-size: 18px;
   font-weight: bold;
-  margin-right: 10px;
+  margin-left: 10px;
 `;
 
 const buttonStyles = css`
@@ -53,20 +60,23 @@ const buttonStyles = css`
   border: 2px solid #4CAF50; /* 버튼 테두리 색상 추가 */
   background-color: white; /* 배경색을 흰색으로 설정 */
   color: black; /* 글자색을 검정색으로 설정 */
-  border-radius: 5px;
+  border-radius: 15px;
+  // width: 20px;
+  // height: 20px;
   transition: background-color 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s, border-radius 0.3s;
 
   &:hover {
     transform: scale(1.05); /* 버튼이 조금 커지는 효과 */
     box-shadow: 0px 8px 15px rgba(0,0,0,0.2); /* 그림자를 진하게 */
     background: linear-gradient(145deg, #4caf50, #66bb6a); /* 그라디언트 배경 */
-    border-radius: 8px; /* 모서리가 더 둥글게 */
+    border-radius: 50%; /* 모서리가 더 둥글게 */
   }
 
   ${({ active }) => active && `
     background-color: #007BFF; /* 활성화됐을 때의 배경색 */
     color: white; /* 활성화됐을 때의 글자색 */
     border-color: #007BFF; /* 활성화됐을 때의 테두리 색상 */
+    border-radius: 50%;
   `}
 `;
 
@@ -195,18 +205,20 @@ const DownloadButton = styled.button`
 `;
 
 const QuestionContainer = styled.div`
-  padding: 10px;
+  padding: 10px 20px;
+  margin-top:5px;
   margin-bottom: 10px;
   border-left: 3px solid transparent;
   transition: border-color 0.3s, margin-left 0.3s;
-  width: 100%; /* 컨테이너 너비를 균일하게 설정 */
+  width: 99%; /* 컨테이너 너비를 균일하게 설정 */
   display: flex;
   justify-content: space-between; /* 내용을 양쪽으로 정렬 */
   border: 1px solid #ddd; /* 각 질문별 구분을 위한 경계선 */
-  background-color: #f9f9f9; /* 배경색 추가 */
+  border-radius:15px;
+  background-color: #F5FBEF; /* 배경색 추가 */
 
   &:hover, &.isSelected {
-    margin-left: -3px;
+    width: 100%;
     border-left: 3px solid #4CAF50; /* 호버 및 선택 시 초록색 테두리로 변경 */
     background-color: #e6ffe6; /* 호버 및 선택 시 배경색 변경 */
   }
@@ -229,7 +241,7 @@ const Button = styled.button` /* 추가한 부분 */
 const QuestionInput = styled.input` /* 추가한 부분 */
   padding: 10px;
   margin: 5px 0;
-  width: 100%;
+  width: 70%;
   border: 1px solid #ccc;
   border-radius: 4px;
 `;
@@ -250,27 +262,51 @@ const OptionLabel = styled.label`
   display: flex;
   align-items: center;
   padding: 5px;
-  border: 1px solid transparent;
-  border-radius: 4px;
-  transition: all 0.3s;
-
-  &:hover {
-    background-color: #f0f0f0;
-    border-color: #ccc;
-  }
-
-  ${({ active }) =>
-    active &&
-    `
-    background-color: #33FF00;
-    
-    border-color: gray;
-  `}
+  width: 100%;
 `;
 
 const OptionCheckbox = styled.input`
   margin-right: 5px;
 `;
+
+const Content_sec = styled.div`
+  width: 80%;
+  min-height:80%;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 40px 20px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius:15px;
+  margin-bottom: 40px;
+  margin-top: 40px;
+`;
+
+const OptionH4 = styled.h4`
+  cursor: pointer;
+  border-radius: 10px;
+  display: inline-block;
+  padding-left: 5px;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  transition: all 0.3s;
+  
+
+  &:hover {
+    background-color: #d4edda;
+    border-color: #ccc;
+  }
+
+  ${({ active }) =>
+    active &&
+    ` 
+    background-color: #d4edda;
+    
+    border-color: #208013;
+  `}
+`;
+
 
 // 주요 컴포넌트 정의
 function SolveQpage() {
@@ -293,6 +329,7 @@ function SolveQpage() {
   const course_professor = parts[1];
 
   const {cookie} = useAuth();
+  const navigate = useNavigate();
 
   // // 선택된 옵션 변겅 시 로그 출력을 위한 useEffect 훅 사용
   // useEffect(() => {
@@ -367,6 +404,7 @@ function SolveQpage() {
     })
       .then((response) => {
         if (response.ok) {
+          navigate(`/Classroom`);
           console.log("답안 보내기 성공.");
         }
         return response.json();
@@ -411,7 +449,7 @@ function SolveQpage() {
                   value={option}
                   onChange={() => handleAnswerSelect(questionId, option)}
                 />
-                {option}
+                <OptionH4 active={selectedAnswers[questionId] === option}>{option}</OptionH4>
               </OptionLabel>
             ))}
           </>
@@ -436,6 +474,7 @@ function SolveQpage() {
           >
             O
           </Button>
+          /
           <Button
             onClick={() => handleAnswerSelect(questionId, 'X')}
             active={selectedAnswers[questionId] === 'X'} // 선택된 항목에 따라 색상 변경을 위해 active 속성 추가
@@ -454,7 +493,7 @@ function SolveQpage() {
       {loading ? (
         <PageContainer>
           <InputContainer>
-            <h1 style={{marginBottom:"25px", color:"#20C075", fontWeight:"bold"}}><MdQuiz /> {course_name} 퀴즈 시작<MdQuiz /></h1>
+          <h1 class="fontMedium" style={{marginBottom:"25px", color:"black", fontWeight:"bold"}}><IoBulbOutline /> <strong style={{color:"#20C075"}}>{course_name}</strong> 퀴즈 시작<IoBulbOutline /></h1>
           </InputContainer>
           <InputContainer>
             <hr style={{ width: "850px", height: "2px", backgroundColor: "#20C075", border: "none" }} />
@@ -466,32 +505,37 @@ function SolveQpage() {
       ) : (
       <PageContainer>
         <InputContainer>
-          <h1 style={{marginBottom:"25px", color:"#20C075", fontWeight:"bold"}}><MdQuiz /> {course_name} 퀴즈 시작<MdQuiz /></h1>
+          <h1 class="fontMedium" style={{marginBottom:"25px", color:"black", fontWeight:"bold"}}><IoBulbOutline /> <strong style={{color:"#20C075"}}>{course_name}</strong> 퀴즈 시작<IoBulbOutline /></h1>
         </InputContainer>
         <InputContainer>
             <hr style={{ width: "850px", height: "2px", backgroundColor: "#20C075", border: "none" }} />
         </InputContainer>
 
-        {questions && questions.map((questionType, index) => (
-          <React.Fragment key={index}>
-            <Section>
-              <Label>문제 유형: {questionType.type}</Label>
-              {questionType.items && questionType.items.map((item, itemIndex) => (
-                <QuestionContainer
-                  key={`question-${index}-${itemIndex}`}
-                  className={selectedQuestionId === `question-${index}-${itemIndex}` ? 'isSelected' : ''}
-                  onClick={() => handleQuestionClick(`question-${index}-${itemIndex}`)}
-                >
-                  <QuestionContent>
-                    {item.content}
-                    {renderQuestionUI(questionType.type, item, `question-${index}-${itemIndex}`)}
-                  </QuestionContent>
-                </QuestionContainer>
-              ))}
-            </Section>
-            {index < questions.length - 1 && <QuestionDivider />}
-          </React.Fragment>
-        ))}
+        <Content_sec>
+          {questions && questions.map((questionType, index) => (
+            <React.Fragment key={index}>
+              <Section>
+                <Label>문제 유형: {questionType.type}</Label>
+                {questionType.items && questionType.items.map((item, itemIndex) => (
+                  <QuestionContainer
+                    key={`question-${index}-${itemIndex}`}
+                    className={selectedQuestionId === `question-${index}-${itemIndex}` ? 'isSelected' : ''}
+                    onClick={() => handleQuestionClick(`question-${index}-${itemIndex}`)}
+                  >
+                    <QuestionContent>
+                      <div style={{marginBottom:"10px"}}>
+                        <strong style={{fontSize:"20px"}}>문제 : {item.content}</strong>
+                      </div>
+                      {renderQuestionUI(questionType.type, item, `question-${index}-${itemIndex}`)}
+                    </QuestionContent>
+                  </QuestionContainer>
+                ))}
+              </Section>
+              {index < questions.length - 1 && <QuestionDivider />}
+            </React.Fragment>
+          ))}
+        </Content_sec>
+        
 
         <QconfirmButton  title="퀴즈 마감 제출" margin_top={true} action={sendAnswer}/>
 

@@ -27,7 +27,7 @@ const Wrapper = styled.button`
   color: ${props => props.border ? "#707070" : "#fff"};
   outline: none;
   font-weight:bold;
-  border-radius: 2px;
+  border-radius: 20px;
   display: flex; /* 요소를 플렉스 박스로 설정 */
   flex-direction: column; /* 수직으로 요소들을 배치 */
   justify-content: center; /* 수직 중앙 정렬 */

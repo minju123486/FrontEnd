@@ -388,7 +388,7 @@ function DiaryPage() {
 
       const data = await response.json();
       const generatedDiaryText = data.diaryText; // 리스트 그대로 받기
-
+      setTitle(data.title);
       setEditorText(generatedDiaryText); // 리스트 그대로 설정
       setShowGuideline(false);
       setIsDiaryCreated(true);
@@ -407,7 +407,7 @@ function DiaryPage() {
 
   const handleConfirmUpload = async () => {
     try {
-        const response = await fetch(`${process.env.REACT_APP_Server_IP}/daily_save`, {
+        const response = await fetch(`${process.env.REACT_APP_Server_IP}/daily_save/`, {
             method: 'POST',
             headers: {
               "Authorization": `Bearer ${cookie.access_token}`,
@@ -435,7 +435,7 @@ function DiaryPage() {
 
 const handleCancelUpload = async () => {
     try {
-        const response = await fetch(`${process.env.REACT_APP_Server_IP}/daily_save`, {
+        const response = await fetch(`${process.env.REACT_APP_Server_IP}/daily_save/`, {
             method: 'POST',
             headers: {
               "Authorization": `Bearer ${cookie.access_token}`,

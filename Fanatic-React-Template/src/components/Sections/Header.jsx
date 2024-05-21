@@ -7,7 +7,8 @@ import FullButton from "../Buttons/FullButton";
 import QuotesIcon from "../../assets/svg/Quotes";
 import { useAuth } from "../Member/AuthContext";
 import robotlee from '../../assets/img/robotlee.png';
-import backbb from '../../assets/img/study2.jpg';
+import backbb from '../../assets/img/backbb8.jpg';
+
 
 export default function Header() {
   const navigate = useNavigate();
@@ -46,32 +47,6 @@ export default function Header() {
     }
   };
 
-  const handleCreateQuestion = () => {
-    navigate("/create_question");
-  };
-
-  const handleSolveQpage = () => {
-    test();
-  };
-
-  const test = () => {
-    fetch(`${process.env.REACT_APP_Server_IP}/??/`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        "Authorization": `Bearer ${cookie.access_token}`
-      },
-    })
-      .then((response) => {
-        if (response.ok) {
-          console.log("response nice good!!");
-        }
-        return response.json();
-      })
-      .catch((error) => {
-        console.error('에러 발생이요 : ', error);
-      });
-  };
 
   const TypingEffect = ({ text, speed, type }) => {
     const [displayText, setDisplayText] = useState('');
@@ -114,14 +89,14 @@ export default function Header() {
       
         {showContent && (
           <Containermain>
-            <p style={{fontSize:"70px", marginTop:"200px", fontWeight:"bold", color:"white"}}> AI 학습실 <strong style={{color:"#B9F6C7"}}>'isoda'</strong> </p>
+            <p class="fontMedium" style={{fontSize:"70px", marginTop:"200px", fontWeight:"bold", color:"black"}}>AI 학습실 <strong class="fontMedium" style={{color:"green"}}>'iSoda'</strong> </p>
             <hr style={{width:"650px"}}/>
-            <div style={{marginTop:"40px", display:"flex", alignItems:"center", flexDirection:"column", marginBottom:"50px"}}>
-              <h3 style={{color:"white", marginBottom:"20px"}}><TypingEffect text="교수와 학생 간의 원활한 공부 환경을 위한 서비스 제공" speed={100} type="h3"/></h3>
-              <h4 style={{color:"white"}}>교수가 문제 유형과 키워드를 고르면</h4>
-              <h4 style={{color:"white", marginBottom:"7px"}}>iSoda 문제 생성 AI가 문제와 정답을 제공.</h4>
-              <h4 style={{color:"white"}}>학생들이 문제를 풀고 나면</h4>
-              <h4 style={{color:"white"}}>학생들의 퀴즈 결과에 대한 통계와 피드백 제공.</h4>
+            <div class="fontMedium" style={{marginTop:"40px", display:"flex", alignItems:"center", flexDirection:"column", marginBottom:"50px"}}>
+              <h3 style={{color:"black", marginBottom:"27px"}}><TypingEffect text="'교수와 학생 간의 원활한 공부 환경을 위한 서비스 제공'" speed={100} type="h3"/></h3>
+              <h4 style={{color:"black", marginBottom:"7px"}}>교수가 문제 유형과 키워드를 고르면</h4>
+              <h4 style={{color:"black", marginBottom:"15px"}}>iSoda 문제 생성 AI가 문제와 정답을 제공.</h4>
+              <h4 style={{color:"black", marginBottom:"7px"}}>학생들이 문제를 풀고 나면</h4>
+              <h4 style={{color:"black"}}>학생들의 퀴즈 결과에 대한 통계와 피드백 제공.</h4>
             </div>
             <Button onClick={handleEnterClassroom}>바로가기 &gt;</Button>
           </Containermain>
@@ -141,7 +116,7 @@ const Button = styled.button`
   cursor: pointer;
 
   &:hover {
-    background-color: #8DF689;
+    background-color: lightgreen;
     color: white;
   }
 `;

@@ -18,6 +18,8 @@ import PostDetail from './components/Sections/PostDetail.jsx'; // PostDetail을 
 import Feedback from "./components/Sections/Feedback.jsx";
 import Feedbacklook from "./components/Sections/Feedbacklook.jsx";
 import Chatting from "./components/Sections/Chatting.jsx";
+import StudyDiary from "./components/Sections/StudyDiary.jsx";
+import ClassDiary from "./components/Sections/ClassDiary.jsx";
 
 // Member
 import Login from "./components/Member/Login.jsx";
@@ -57,7 +59,8 @@ export default function App() {
           <Route path="/feedback/:course_imformation" element={<Feedback />} />
           <Route path="/feedbacklook/:course_imformation" element={<Feedbacklook />} />
           <Route path="/chatting" element={<Chatting />} />
-       
+          <Route path="/studyDiary" element={<StudyDiary/>} />
+          <Route path="/classDiary" element={<ClassDiary/>} />
         </Routes>         
       </AuthProvider>
       <Footer />

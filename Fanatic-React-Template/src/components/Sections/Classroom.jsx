@@ -64,6 +64,7 @@ const Classroom = () => {
             if (response.ok) {
                 const data = await response.json();
                 setCourses(data.lecture || []);
+                console.log(data.lecture);
             } else {
                 console.error('courses');
             }
@@ -133,7 +134,7 @@ const Classroom = () => {
         return (
             <ModalWrapper>
                 <ModalContent>
-                    <p>신청에 성공했습니다!</p>
+                    <p style={{marginBottom:"20px"}}>신청에 성공했습니다!</p>
                     <Button onClick={closeModal}>확인</Button>
                 </ModalContent>
             </ModalWrapper>
@@ -316,9 +317,10 @@ const CourseTitle = styled.h2`
 `;
 
 const ProfessorName = styled.p`
-  margin: 0
+  margin-top: 7px;
   font-size: 14px;
   color: #666;
+  margin-bottom:7px;
 `;
 
 const Button = styled.button`
@@ -326,6 +328,7 @@ const Button = styled.button`
   color: ${props => props.disabled ? '#666' : 'white'};
   border: none;
   padding: 10px 20px;
+  border-radius:20px;
   cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
 
   &:hover {

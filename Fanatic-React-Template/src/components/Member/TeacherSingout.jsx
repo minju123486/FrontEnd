@@ -15,7 +15,6 @@ const StudentSingout = () => {
     const grade = 0;
     const [email, setemail] = useState('');
     const [phone, setphone] = useState('');
-    const [phoneid, setphoneid] = useState('');
 
 
     const idUpdate = (event) => {
@@ -38,9 +37,6 @@ const StudentSingout = () => {
     };
     const phoneUpdate = (event) => {
         setphone(event.target.value); // 입력한 아이디로 상태 업데이트
-    };
-    const phoneidUpdate = (event) => {
-        setphoneid(event.target.value); // 입력한 아이디로 상태 업데이트
     };
 
 
@@ -107,14 +103,14 @@ const StudentSingout = () => {
     // 각 입력 요소에 대한 입력 유효성 검사 함수 정의
     const validateInputs = () => {
         // 필수 입력 요소에 대한 상태를 확인하여 유효성 검사 수행
-        const isValid = id !== '' && password !== '' && passwordcheack !== '' && name !== '' && studentid !== '' && email !== '' && phone !== '' && phoneid !== '' && year !== '' && month !== '' && day !== '' && gender !== '' && isAllAgreed && isPasswordMatch;
+        const isValid = id !== '' && password !== '' && passwordcheack !== '' && name !== '' && studentid !== '' && email !== '' && phone !== '' && year !== '' && month !== '' && day !== '' && gender !== '' && isAllAgreed && isPasswordMatch;
         // 입력 상태를 변경
         setInputValid(isValid);
     };
 
     useEffect(() => {
         validateInputs();
-    }, [id, password, passwordcheack, name, studentid, email, phone, phoneid, year, month, day, gender, agreement1, agreement2, agreement3]);
+    }, [id, password, passwordcheack, name, studentid, email, phone, year, month, day, gender, agreement1, agreement2, agreement3]);
     
     const usertype = "professor";
 
@@ -296,17 +292,6 @@ const StudentSingout = () => {
                     onChange={handleChange} 
                     placeholder="숫자만 입력해주세요." 
                 />
-                <CheckButton>인증번호 받기</CheckButton>
-                </div>
-
-                <div style={{marginBottom:"7px"}}>
-                    <strong style={{ fontSize:"15px", fontWeight:"bold", marginLeft:"25px"}} className="font15 extraBold">인증번호</strong> 
-                <InputBox4 
-                    type="text" 
-                    value={phoneid} 
-                    onChange={phoneidUpdate} 
-                    placeholder="인증번호 4자리를 입력하세요." 
-                />
                 </div>
 
                 <div style={{marginTop:"7px"}}> 
@@ -360,7 +345,7 @@ const StudentSingout = () => {
                 </BirthDateContainer>
                 <Separator />
                 <div style={{marginBottom:"7px"}}>
-                    <strong style={{ fontSize:"15px", fontWeight:"bold", marginLeft:"25px"}} className="font15 extraBold">이용약관 동의</strong> 
+                    <strong style={{ fontSize:"15px", fontWeight:"bold", marginLeft:"29px"}} className="font15 extraBold">이용약관 동의</strong> 
                     <Checkbox2 type="checkbox" checked={agreement1} onChange={() => agreementChange1(!agreement1)}/> <strong style={{fontSize:"20px"}}>개인정보 수집 동의</strong>
                     <div><Checkbox type="checkbox" checked={agreement2} onChange={() => agreementChange2(!agreement2)}/> <strong style={{fontSize:"20px"}}>개인정보 이용 동의</strong></div>
                     <div><Checkbox type="checkbox" checked={agreement3} onChange={() => agreementChange3(!agreement3)}/> <strong style={{fontSize:"20px"}}>GPS 사용 동의</strong></div>

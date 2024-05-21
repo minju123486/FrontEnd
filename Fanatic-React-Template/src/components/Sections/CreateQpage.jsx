@@ -7,7 +7,7 @@ import {GiBookmarklet} from 'react-icons/gi';
 import { useParams } from 'react-router-dom';
 import { useAuth } from "../Member/AuthContext";
 import timeloding from '../../assets/img/loding/time.gif';
-import isodaloding from '../../assets/img/loding/isodaloding.png';
+import isodaloding from '../../assets/img/loding/secsoda.png';
 
 
 const PageContainer = styled.div`
@@ -28,6 +28,10 @@ const Section = styled.div`
   border: 1px solid #ccc; /* 섹션 별 구분선 */
   padding: 20px; /* 내부 패딩 */
   box-shadow: 0px 2px 4px rgba(0,0,0,0.1); /* 경계가 더 명확하도록 그림자 추가 */
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 `;
 
 const ButtonContainer = styled.div`
@@ -47,6 +51,35 @@ const Label = styled.span`
   font-size: 18px;
   font-weight: bold;
   margin-right: 10px;
+`;
+
+const buttonStyles2 = css`
+  padding: 10px 15px;
+  margin: 0 5px;
+  font-size: 16px;
+  cursor: pointer;
+  border: 2px solid #4CAF50; /* 버튼 테두리 색상 추가 */
+  background-color: white; /* 배경색을 흰색으로 설정 */
+  color: black; /* 글자색을 검정색으로 설정 */
+  border-radius: 15px;
+  // width: 20px;
+  // height: 20px;
+  transition: background-color 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s, border-radius 0.3s;
+
+  &:hover {
+    transform: scale(1.05); /* 버튼이 조금 커지는 효과 */
+    box-shadow: 0px 8px 15px rgba(0,0,0,0.2); /* 그림자를 진하게 */
+    background: linear-gradient(145deg, #4caf50, #66bb6a); /* 그라디언트 배경 */
+    border-radius: 50%; /* 모서리가 더 둥글게 */
+  }
+  
+
+  ${({ active }) => active && `
+    background-color: #007BFF; /* 활성화됐을 때의 배경색 */
+    color: white; /* 활성화됐을 때의 글자색 */
+    border-color: #007BFF; /* 활성화됐을 때의 테두리 색상 */
+    border-radius: 50%;
+  `}
 `;
 
 const buttonStyles = css`
@@ -199,18 +232,20 @@ const DownloadButton = styled.button`
 `;
 
 const QuestionContainer = styled.div`
-  padding: 10px;
+  padding: 10px 20px;
+  margin-top:5px;
   margin-bottom: 10px;
   border-left: 3px solid transparent;
   transition: border-color 0.3s, margin-left 0.3s;
-  width: 100%; /* 컨테이너 너비를 균일하게 설정 */
+  width: 99%; /* 컨테이너 너비를 균일하게 설정 */
   display: flex;
   justify-content: space-between; /* 내용을 양쪽으로 정렬 */
   border: 1px solid #ddd; /* 각 질문별 구분을 위한 경계선 */
-  background-color: #f9f9f9; /* 배경색 추가 */
+  border-radius:15px;
+  background-color: #F5FBEF; /* 배경색 추가 */
 
   &:hover, &.isSelected {
-    margin-left: -3px;
+    width: 100%;
     border-left: 3px solid #4CAF50; /* 호버 및 선택 시 초록색 테두리로 변경 */
     background-color: #e6ffe6; /* 호버 및 선택 시 배경색 변경 */
   }
@@ -227,13 +262,13 @@ const Checkbox = styled.div`
 `;
 
 const Button = styled.button` /* 추가한 부분 */
-  ${buttonStyles}
+  ${buttonStyles2}
 `;
 
 const QuestionInput = styled.input` /* 추가한 부분 */
   padding: 10px;
   margin: 5px 0;
-  width: 100%;
+  width: 70%;
   border: 1px solid #ccc;
   border-radius: 4px;
 `;
@@ -254,26 +289,49 @@ const OptionLabel = styled.label`
   display: flex;
   align-items: center;
   padding: 5px;
-  border: 1px solid transparent;
-  border-radius: 4px;
+  width: 100%;
+`;
+
+const OptionCheckbox = styled.input`
+  margin-right: 5px;
+`;
+
+const Content_sec = styled.div`
+  width: 95%;
+  min-height:80%;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 40px 20px 20px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius:15px;
+  margin-bottom: 40px;
+  margin-top: 40px;
+`;
+
+const OptionH4 = styled.h4`
+  cursor: pointer;
+  border-radius: 10px;
+  display: inline-block;
+  padding-left: 5px;
+  border: 2px solid transparent;
+  border-radius: 10px;
   transition: all 0.3s;
+  
 
   &:hover {
-    background-color: #f0f0f0;
+    background-color: #d4edda;
     border-color: #ccc;
   }
 
   ${({ active }) =>
     active &&
     `
-    background-color: #33FF00;
+    background-color: #d4edda;
     
-    border-color: gray;
+    border-color: #208013;
   `}
-`;
-
-const OptionCheckbox = styled.input`
-  margin-right: 5px;
 `;
 
 // 주요 컴포넌트 정의
@@ -560,7 +618,7 @@ const fetchQcheck = () => {
                   value={option}
                   onChange={() => handleAnswerSelect(questionId, option)}
                 />
-                {option}
+                <OptionH4 active={selectedAnswers[questionId] === option}>{option}</OptionH4>
               </OptionLabel>
             ))}
           </>
@@ -585,6 +643,7 @@ const fetchQcheck = () => {
           >
             O
           </Button>
+          /
           <Button
             onClick={() => handleAnswerSelect(questionId, 'X')}
             active={selectedAnswers[questionId] === 'X'} // 선택된 항목에 따라 색상 변경을 위해 active 속성 추가
@@ -604,7 +663,7 @@ const fetchQcheck = () => {
         {Object.keys(questionTypes).map((type) => (
           <React.Fragment key={type}>
             <SidebarSection>
-              <Label>{type}</Label>
+              <Label><p class="fontBold">{type}</p></Label>
               {questionTypes[type].length > 0 ? (
                 questionTypes[type].map(subType => {
                   const subTypeKey = `${type}-${subType}`;
@@ -617,7 +676,7 @@ const fetchQcheck = () => {
                                         handleSelectionChange(subTypeKey, 1);
                         }}
                       >
-                        {subType}
+                        <p class="fontMedium">{subType}</p>
                       </TypeButton>
                       <CountSelect
                         value={isActive ? (selections[subTypeKey] || 1) : ''}
@@ -625,7 +684,7 @@ const fetchQcheck = () => {
                         disabled={!isActive}
                       >
                         {[1, 2, 3, 4, 5].map(count => (
-                          <option key={count} value={count}>{count}개</option>
+                          <option class="fontLight" key={count} value={count}>{count}개</option>
                         ))}
                       </CountSelect>
                     </ButtonContainer>
@@ -639,7 +698,7 @@ const fetchQcheck = () => {
                     onChange={(e) => handleSelectionChange('OX선택형', parseInt(e.target.value))}
                   >
                     {[1, 2, 3, 4, 5].map(count => (
-                      <option key={count} value={count}>{count}개</option>
+                      <option class="fontLight" key={count} value={count}>{count}개</option>
                     ))}
                   </CountSelect>
                 </ButtonContainer>
@@ -649,7 +708,7 @@ const fetchQcheck = () => {
           </React.Fragment>
         ))}
         <GenerateButtonContainer>
-          <GenerateButton onClick={handleGenerateButtonClick}>문제 생성</GenerateButton>
+          <GenerateButton onClick={handleGenerateButtonClick}><p class="fontMedium">문제 생성</p></GenerateButton>
         </GenerateButtonContainer>
       </Sidebar>
 
@@ -659,7 +718,7 @@ const fetchQcheck = () => {
       {loading ? (
         <>
           <InputContainer>
-            <h1 style={{marginBottom:"25px", color:"#20C075", fontWeight:"bold"}}><GiBookmarklet />&nbsp;<em style={{color:"red"}}>{course_name}</em> &nbsp; 문제 생성 페이지&nbsp;<GiBookmarklet /></h1>
+            <h1 class="fontMedium" style={{marginBottom:"25px", color:"black", fontWeight:"bold"}}><GiBookmarklet />&nbsp;<strong style={{color:"#20C075"}}>{course_name}</strong> &nbsp; 문제 생성 페이지&nbsp;<GiBookmarklet /></h1>
           </InputContainer>
           <img src={isodaloding} alt={"로딩 중"} style={{marginTop:"15px"}}/>
           <h2 style={{marginTop:"25px", color:"#20C075", fontWeight:"bold"}}>퀴즈가 생성 중입니다.</h2>
@@ -667,7 +726,7 @@ const fetchQcheck = () => {
       ):(
         <>
           <InputContainer>
-          <h1 style={{marginBottom:"25px", color:"#20C075", fontWeight:"bold"}}><GiBookmarklet />&nbsp;<em style={{color:"red"}}>{course_name}</em> &nbsp; 문제 생성 페이지&nbsp;<GiBookmarklet /></h1>
+          <h1 class="fontMedium" style={{marginBottom:"25px", color:"black", fontWeight:"bold"}}><GiBookmarklet />&nbsp;<strong style={{color:"#20C075"}}>{course_name}</strong> &nbsp; 문제 생성 페이지&nbsp;<GiBookmarklet /></h1>
         </InputContainer>
         <InputContainer>
         <h2>Keyword 선택  - </h2>
@@ -698,26 +757,30 @@ const fetchQcheck = () => {
         </InputContainer2>
 
         
-        {questions && questions.map((questionType, index) => (
-          <React.Fragment key={index}>
-            <Section>
-              <Label>문제 유형: {questionType.type}</Label>
-              {questionType.items && questionType.items.map((item, itemIndex) => (
-                <QuestionContainer
-                  key={`question-${index}-${itemIndex}`}
-                  className={selectedQuestionId === `question-${index}-${itemIndex}` ? 'isSelected' : ''}
-                  onClick={() => handleQuestionClick(`question-${index}-${itemIndex}`)}
-                >
-                  <QuestionContent>
-                    {item.content}
-                    {renderQuestionUI(questionType.type, item, `question-${index}-${itemIndex}`)}
-                  </QuestionContent>
-                </QuestionContainer>
-              ))}
-            </Section>
-            {index < questions.length - 1 && <QuestionDivider />}
-          </React.Fragment>
-        ))}
+        <Content_sec>
+          {questions && questions.map((questionType, index) => (
+            <React.Fragment key={index}>
+              <Section>
+                <Label>문제 유형: {questionType.type}</Label>
+                {questionType.items && questionType.items.map((item, itemIndex) => (
+                  <QuestionContainer
+                    key={`question-${index}-${itemIndex}`}
+                    className={selectedQuestionId === `question-${index}-${itemIndex}` ? 'isSelected' : ''}
+                    onClick={() => handleQuestionClick(`question-${index}-${itemIndex}`)}
+                  >
+                    <QuestionContent>
+                      <div style={{marginBottom:"10px"}}>
+                      <strong style={{fontSize:"20px"}}>문제 : {item.content}</strong>
+                      </div>
+                      {renderQuestionUI(questionType.type, item, `question-${index}-${itemIndex}`)}
+                    </QuestionContent>
+                  </QuestionContainer>
+                ))}
+              </Section>
+              {index < questions.length - 1 && <QuestionDivider />}
+            </React.Fragment>
+          ))}
+        </Content_sec>
         <QconfirmButton title="확정 및 퀴즈 시작" action={handleSolveQpage} disabled={check !== 1}/>
         </>
       )}

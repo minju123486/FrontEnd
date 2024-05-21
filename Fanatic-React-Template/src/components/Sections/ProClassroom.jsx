@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from "../Member/AuthContext";
 import backbb from '../../assets/img/study2.jpg';
-import isodaloding from '../../assets/img/loding/isodaloding.png';
+import isodaloding from '../../assets/img/loding/secsoda.png';
 
 //useState로 컴포넌트 상태 관리
 const ProClassroom = () => {
@@ -177,7 +177,7 @@ const ProClassroom = () => {
       return (
           <ModalWrapper>
               <ModalContent>
-                  <p>강의실 생성에 성공했습니다!</p>
+                  <p style={{marginBottom:"15px"}}>강의실 생성에 성공했습니다!</p>
                   <Button onClick={closeModal}>확인</Button>
               </ModalContent>
           </ModalWrapper>
@@ -213,20 +213,22 @@ return (
                         onClick={() => setView('myCourses')}
                         active={view === 'myCourses'}
                     >
-                        내 강의
+                        <strong>내 강의</strong>
                     </NavLink>
                     <NavLink 
                         onClick={() => { setView('createClassroom'); fetchCourses(); }}
                         active={view === 'createClassroom'}
                     >
-                        강의실 생성
+                        <strong>강의실 생성</strong>
                     </NavLink>
                 </Nav>
                 {(view === 'createClassroom' || view === 'myCourses') && Array.isArray(myCourses) && myCourses.map(course => (
                     <CourseCard key={course.key}>
                         <CourseInfo>
                             <CourseTitle>{course.name}</CourseTitle>
+                            {view === 'myCourses' ? (
                             <ProfessorName>교수명 : {user}</ProfessorName>
+                            ):(<></>)}
                         </CourseInfo>
                         <div>
                             {view === 'myCourses' ? (
@@ -247,7 +249,8 @@ return (
                             else {
                               handleCreateClassroom(course.name);
                             }
-                        }}>
+                        }}
+                        active={view === 'myCourses' && course.check === 1}>
                             {view === 'myCourses' ? (course.check === 1 ? '퀴즈 마감' : '문제 생성') : '생성하기'}
                         </Button>
                         </div>
@@ -342,7 +345,7 @@ const CourseInfo = styled.div`
 `;
 
 const CourseTitle = styled.h2`
-  margin: 0;
+  margin-bottom: 10px;
   color: #333;
 `;
 
@@ -355,14 +358,33 @@ const ProfessorName = styled.p`
 const Button = styled.button`
   background: #4CAF50;
   color: white;
-  border: none;
+  border: 1px solid transparent;
   padding: 8px 16px;
   cursor: pointer;
   transition: background 0.3s;
 
+  margin-left: 10px;
+  border-radius: 20px;
+  border-color: #ccc;
+  
+
+
   &:hover {
     background: #367c39;
+    border-color: #208013;
   }
+
+  ${({ active }) =>
+    active &&
+    `
+    background-color: #7684F6;
+    border-color: #ccc;
+
+    &:hover {
+      background: #0717F8;
+      border-color: #3F54F0;
+    }
+  `}
 `;
 
 const ModalWrapper = styled.div`

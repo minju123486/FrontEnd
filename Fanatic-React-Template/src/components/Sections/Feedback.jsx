@@ -30,7 +30,7 @@ const Feedback = () => {
             const response = await fetch(`${process.env.REACT_APP_Server_IP}/feedback_view/`, {
                 method: 'POST',
                 headers: {
-                    "Authorization": `Bearer ${cookie.access_token}`,
+                    "Authorization": `Bearer ${cookie.access_token}`, 
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ 
@@ -68,7 +68,7 @@ const Feedback = () => {
         <Wrapper>
             <Content>
                 <Title>
-                    <h2 style={{color:"#20C075", fontWeight:"bold"}}>{course_name} 피드백</h2>
+                    <h2 class="fontMedium" style={{color:"black", fontWeight:"bold"}}><strong style={{color:"#20C075"}}>{course_name}</strong> 피드백</h2>
                     <Underline />
                 </Title>
 
@@ -138,7 +138,7 @@ const DateItem = styled.div`
 `;
 
 const DateTitle = styled.h3`
-  margin: 0;
+  margin-bottom: 10px;
   font-weight: bold;
   color: #333;
 `;
@@ -147,7 +147,7 @@ const Button = styled.button`
   background: ${props => props.disabled ? '#ccc' : '#4CAF50'};
   color: ${props => props.disabled ? '#666' : 'white'};
   border: none;
-  border-radius:7px;
+  border-radius:20px;
   padding: 10px 20px;
   cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
 

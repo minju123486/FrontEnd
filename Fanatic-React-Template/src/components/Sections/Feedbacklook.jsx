@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from "../Member/AuthContext";
 import { MdReportProblem } from "react-icons/md";
@@ -7,6 +7,7 @@ import { FaCircleCheck } from "react-icons/fa6";
 import { useParams } from 'react-router-dom';
 import { useLocation } from 'react-router-dom';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { FaRegDotCircle } from "react-icons/fa";
 
 const Feedbacklook = () => {
     const navigate = useNavigate();
@@ -46,6 +47,7 @@ const Feedbacklook = () => {
 
     useEffect(() => {
         fetchfeedbacklook();
+        console.log(feedback.questions);
     }, []);
 
 
@@ -89,6 +91,65 @@ const Feedbacklook = () => {
         }
         console.log(elements);
         return elements;
+    };
+
+    const transformAnswer = (answer) => {
+      const match = answer.match(/정답\s*:\s*(\d+번)\s+(.+)/);
+      if (match) {
+        const number = match[1];
+        const text = match[2].trim();
+        return `${number} : ${text}`;
+      }
+      return answer; // 매칭되지 않으면 원래 문자열 반환
+    };
+
+    const transformOption = (option) => {
+      const trimmedOption = option.trim();
+      return trimmedOption;
+    };
+
+    const renderQuestionUI = (type, item, questionId, answer) => {
+      const re_answer = transformAnswer(answer);
+        switch (type) {
+          case 1: // 객관식-빈칸
+          case 2: // 객관식-단답형
+          case 3: // 객관식-문장형 
+            return (
+              <>
+                {item.options.map((option, optionIndex) => (
+                  <OptionLabel key={optionIndex}>
+                    <OptionDiv
+                      id={`option-${optionIndex}`}
+                      name={`question-${questionId}`}
+                    >
+                      <OptionH4 isCorrect={transformOption(option) === re_answer}>
+                        <FaRegDotCircle style={{width:"13px", height:"13px"}}/> {option}
+                      </OptionH4>
+                    </OptionDiv>
+                  </OptionLabel>
+                ))}
+              </>
+            );
+        
+          case 4: // 단답형-빈칸
+          case 5: // 단답형-문장형
+          case 7: // 서술형-코딩
+            return (
+              <div style={{width:"100%"}}>
+                <h4 style={{color:"black", marginLeft: "5px", display: "inline-block",background:"#d4edda",borderRadius:"10px",margin:"0"}}>&nbsp;정답 : {re_answer}&nbsp;</h4>
+              </div>
+            );
+          case 6: // OX선택형-O/X
+          return (
+            <>
+              <div style={{background:"#d4edda", width:"70px", borderRadius:"10px"}}>
+                <strong style={{color:"black", marginLeft: "5px"}}>정답 : {re_answer}</strong>
+              </div>
+            </>
+          );
+        default:
+          return null;
+      }
     };
 
     return(
@@ -150,13 +211,33 @@ const Feedbacklook = () => {
                         <Button onClick={handleBack}><h4>확인</h4></Button>
                 </Content>   
             ) : (
-                <Content>
+                <Content_sec>
                 <Title>
-                    <h2 style={{color:"#20C075", fontWeight:"bold"}}>{course_name} 퀴즈목록 ({location.state.date})</h2>
+                    <h2 class="fontMedium" style={{color:"#20C075", fontWeight:"bold"}}>{course_name} 퀴즈목록 ({location.state.date})</h2>
                     <Underline />
                 </Title>
-                    {/* <Button><h4>확인</h4></Button> */}
-            </Content>
+                {feedback.questions && feedback.questions.map((questionType, index) => (
+                    <React.Fragment key={index}>
+                        <Section>
+                        <Label>문제 유형: {questionType.type}</Label>
+                        {questionType.items && questionType.items.map((item, itemIndex) => (
+                            <QuestionContainer
+                            key={`question-${index}-${itemIndex}`}
+                            >
+                            <QuestionContent>
+                                <div style={{marginBottom:"10px"}}>
+                                  <strong>문제 : {item.content}</strong>
+                                </div>
+                                {renderQuestionUI(questionType.type, item, `question-${index}-${itemIndex}`, item.answer)}
+                            </QuestionContent>
+                            </QuestionContainer>
+                        ))}
+                        </Section>
+                        {index < feedback.questions.length - 1 && <QuestionDivider />}
+                    </React.Fragment>
+                    ))}
+                    <Button onClick={handleBack}><h4>확인</h4></Button>
+            </Content_sec>
         )}
         </Wrapper>
     );
@@ -165,11 +246,11 @@ const Feedbacklook = () => {
 export default Feedbacklook;
 
 const Wrapper = styled.div`
-  margin-top:40px;
+  margin-top:80px;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 1050px;
+  height: 100%;
   background: #EFF8F3;
   flex-direction: column;
 `;
@@ -184,6 +265,20 @@ const Content = styled.div`
   flex-direction: column;
   align-items: center;
   border-radius:15px;
+  margin-bottom: 40px;
+`;
+
+const Content_sec = styled.div`
+  width: 60%;
+  min-height:80%;
+  background-color: white;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius:15px;
+  margin-bottom: 40px;
 `;
 
 const Title = styled.div`
@@ -197,6 +292,7 @@ const Underline = styled.div`
   height: 2px;
   background-color: #20C075;
   margin-top: 12px;
+  margin-bottom: 40px;
 `;
 
 const BoxWrapper = styled.div`
@@ -229,7 +325,6 @@ const FeedbackBox = styled.div`
   border-radius: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 10px;
-  margin-top:40px;
 `;
 
 const FeedbackContent = styled.div`
@@ -280,4 +375,113 @@ const ProblemButton = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+`;
+
+const Section = styled.div`
+  margin-bottom: 20px;
+  width: 100%; /* 전체 너비를 균일하게 설정 */
+  border: 1px solid #ccc; /* 섹션 별 구분선 */
+  padding: 20px; /* 내부 패딩 */
+  box-shadow: 0px 2px 4px rgba(0,0,0,0.1); /* 경계가 더 명확하도록 그림자 추가 */
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+`;
+
+const Label = styled.span`
+  font-size: 18px;
+  font-weight: bold;
+  margin-left: 10px;
+`;
+
+const QuestionContainer = styled.div`
+  padding: 10px 20px;
+  margin-top:5px;
+  margin-bottom: 10px;
+  border-left: 3px solid transparent;
+  transition: border-color 0.3s, margin-left 0.3s;
+  width: 99%; /* 컨테이너 너비를 균일하게 설정 */
+  display: flex;
+  justify-content: space-between; /* 내용을 양쪽으로 정렬 */
+  border: 1px solid #ddd; /* 각 질문별 구분을 위한 경계선 */
+  border-radius:15px;
+  background-color: #F5FBEF; /* 배경색 추가 */
+
+  &:hover, &.isSelected {
+    width: 100%;
+    border-left: 3px solid #4CAF50; /* 호버 및 선택 시 초록색 테두리로 변경 */
+    background-color: #e6ffe6; /* 호버 및 선택 시 배경색 변경 */
+  }
+`;
+
+const QuestionContent = styled.div`
+  white-space: pre-wrap; /* 공백과 개행을 유지합니다. */
+  flex: 1;
+`;
+
+const OptionH4 = styled.h4`
+  font-weight: ${props => props.isCorrect ? 'bold' : '300'};
+  cursor: pointer;
+  background-color: ${props => props.isCorrect ? '#d4edda' : ''};
+  border-radius: 10px;
+  display: inline-block;
+  padding-left: 5px;
+`;
+
+const OptionDiv = styled.div`
+  width:100%;
+`;
+
+const OptionLabel = styled.label`
+display: block;
+margin-bottom: 10px;
+`;
+
+const OptionCheckbox = styled.input`
+  margin-right: 5px;
+`;
+
+const QuestionInput = styled.input` /* 추가한 부분 */
+  padding: 10px;
+  margin: 5px 0;
+  width: 60%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+`;
+
+const buttonStyles = css`
+  padding: 10px 15px;
+  margin: 0 5px;
+  font-size: 16px;
+  cursor: pointer;
+  border: 2px solid #4CAF50; /* 버튼 테두리 색상 추가 */
+  background-color: white; /* 배경색을 흰색으로 설정 */
+  color: black; /* 글자색을 검정색으로 설정 */
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s, transform 0.3s, box-shadow 0.3s, border-radius 0.3s;
+
+  &:hover {
+    transform: scale(1.05); /* 버튼이 조금 커지는 효과 */
+    box-shadow: 0px 8px 15px rgba(0,0,0,0.2); /* 그림자를 진하게 */
+    background: linear-gradient(145deg, #4caf50, #66bb6a); /* 그라디언트 배경 */
+    border-radius: 8px; /* 모서리가 더 둥글게 */
+  }
+
+  ${({ active }) => active && `
+    background-color: #007BFF; /* 활성화됐을 때의 배경색 */
+    color: white; /* 활성화됐을 때의 글자색 */
+    border-color: #007BFF; /* 활성화됐을 때의 테두리 색상 */
+  `}
+`;
+
+const Buttona = styled.button` /* 추가한 부분 */
+  ${buttonStyles}
+`;
+
+const QuestionDivider = styled.hr`
+  margin: 20px 0;
+  border: 0;
+  height: 1px;
+  background-color: #ccc; // 문제 사이의 구별 선
 `;
