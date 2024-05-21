@@ -47,6 +47,13 @@ export default function Projects() {
       navigate("/login");
     }
   };
+  const handleCreateClassDiary = () => {
+    if (cookie.access_token) {
+      navigate("/createClassDiary");
+    } else {
+      navigate("/login");
+    }
+  };
   const handlegoClassDiary = () => {
     if (cookie.access_token) {
       navigate("/classDiary");
@@ -130,7 +137,7 @@ export default function Projects() {
               </p>
               <ButtonsRow className="flexNullCenter" style={{ margin: "30px 0" }}>
                 <div style={{ width: "190px" }}>
-                  <FullyButton title="수업 일기 생성 &gt;" action={() => alert("수업 일기 생성")} />
+                  <FullyButton title="수업 일기 생성 &gt;" action={handleCreateClassDiary} />
                 </div>
                 <div style={{ width: "190px", marginLeft: "15px" }}>
                   <FullyButton title="수업 일기장 &gt;" action={handlegoClassDiary} border />

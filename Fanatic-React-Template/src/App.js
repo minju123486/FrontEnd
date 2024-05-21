@@ -21,6 +21,8 @@ import Chatting from "./components/Sections/Chatting.jsx";
 import StudyDiary from "./components/Sections/StudyDiary.jsx";
 import ClassDiary from "./components/Sections/ClassDiary.jsx";
 import StudyDiarylook from "./components/Sections/StudyDiarylook.jsx";
+import CreateClassDiary from "./components/Sections/CreateClassDiary.jsx";
+import ClassDiarylook from "./components/Sections/ClassDiarylook.jsx";
 
 // Member
 import Login from "./components/Member/Login.jsx";
@@ -63,6 +65,8 @@ export default function App() {
           <Route path="/studyDiary" element={<StudyDiary/>} />
           <Route path="/classDiary" element={<ClassDiary/>} />
           <Route path="/studyDiarylook" element={<StudyDiarylook/>} />
+          <Route path="/createClassDiary" element={<CreateClassDiary/>} />
+          <Route path="/classDiarylook" element={<ClassDiarylook/>} />
         </Routes>
       </AuthProvider>
       <Footer />

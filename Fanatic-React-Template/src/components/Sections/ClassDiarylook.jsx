@@ -9,7 +9,7 @@ import { useLocation } from 'react-router-dom';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { FaRegDotCircle } from "react-icons/fa";
 
-const StudyDiarylook = () => {
+const ClassDiarylook = () => {
     const navigate = useNavigate();
     const { cookie, user} = useAuth();
     
@@ -20,7 +20,7 @@ const StudyDiarylook = () => {
 
     
     const handleBack = () => {
-        navigate(`/studyDiary`);
+        navigate(`/classDiary`);
     };
 
     useEffect(() => {
@@ -30,7 +30,7 @@ const StudyDiarylook = () => {
 
     const fetchstudydiarylook = async () => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_Server_IP}/daily_look/`, {
+        const response = await fetch(`${process.env.REACT_APP_Server_IP}/classdaily_look/`, {
             method: 'POST',
             headers: {
                 "Authorization": `Bearer ${cookie.access_token}`,
@@ -44,9 +44,10 @@ const StudyDiarylook = () => {
       
         if (response.ok) {
             setTitle(result.title);
+            console.log(result.content)
             const sentences = result.content.match(/[^.!?]+[.!?]/g).map((sentence, index) => (
-              <p  key={index}><strong class="fontLight">{sentence}</strong><br/><br/></p> 
-          ));
+                <p  key={index}><strong class="fontLight">{sentence}</strong><br/><br/></p> 
+            ));
             setContent(sentences);
         } 
         else {
@@ -81,7 +82,7 @@ const StudyDiarylook = () => {
     );
 }
 
-export default StudyDiarylook;
+export default ClassDiarylook;
 
 const Wrapper = styled.div`
   margin-top:80px;
