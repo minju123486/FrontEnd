@@ -268,50 +268,24 @@ export default function Community() {
     return (
         <Container>
             <TabsContainer>
-                <Tab active={showPopularPosts} onClick={() => handleTabClick('popular')}>인기 게시물</Tab>
-                <Tab active={!showPopularPosts} onClick={() => handleTabClick('diary')}>일기</Tab>
-            </TabsContainer>
-            {showPopularPosts ? (
-                <div>
-                    
-                    <CardsContainer>
-                        {popularPosts.map(post => (
-                            <PopularPostCard
-                                key={post.id}
-                                id={post.id}
-                                title={post.title}
-                                author={post.author}
-                                preview={post.content}
-                                image={ReactImage}
-                                like={post.like}
-                                watch={post.watch}
-                                date={`${post.year}.${post.month}.${post.day}`}
-                                comments={post.comment_number}
-                            />
-                        ))}
-                    </CardsContainer>
-                </div>
-            ) : (
-                <div>
-                    
-                    <CardsContainer>
-                        {diaryPosts.map(post => (
-                            <PopularPostCard
-                                key={post.id}
-                                id={post.id}
-                                title={post.title}
-                                author={post.author}
-                                preview={post.preview}
-                                image={post.image}
-                                like={post.like}
-                                watch={post.watch}
-                                date={post.date}
-                                comments={post.comments}
-                            />
-                        ))}
-                    </CardsContainer>
-                </div>
-            )}
+    <Tab active={showPopularPosts} onClick={() => handleTabClick('popular')}>인기 게시물</Tab>
+</TabsContainer>
+<CardsContainer>
+    {popularPosts.map(post => (
+        <PopularPostCard
+            key={post.id}
+            id={post.id}
+            title={post.title}
+            author={post.author}
+            preview={post.content}
+            image={ReactImage}
+            like={post.like}
+            watch={post.watch}
+            date={`${post.year}.${post.month}.${post.day}`}
+            comments={post.comment_number}
+        />
+    ))}
+</CardsContainer>
             <HorizontalRule />
             <MainContent>
                 <LeftColumn>
@@ -516,19 +490,8 @@ const Message = styled.div`
   align-items: ${props => (props.isOwnMessage ? 'flex-end' : 'flex-start')}; // 본인 메시지: 오른쪽 정렬, 다른 사람 메시지: 왼쪽 정렬
   position: relative;
 
-  &::after {
-    content: '';
-    position: absolute;
-    top: 10px;
-    ${props => (props.isOwnMessage ? 'right: -10px;' : 'left: -10px;')} // 본인 메시지: 오른쪽 말풍선 꼬리, 다른 사람 메시지: 왼쪽 말풍선 꼬리
-    width: 0;
-    height: 0;
-    border: 10px solid transparent;
-    border-top-color: ${props => (props.isOwnMessage ? '#FAFAD2' : '#ccffcc')}; // 본인 메시지: 노란색 말풍선 꼬리, 다른 사람 메시지: 초록색 말풍선 꼬리
-    ${props => (props.isOwnMessage ? 'border-right: 0;' : 'border-left: 0;')}
-    ${props => (props.isOwnMessage ? 'margin-top: -10px;' : 'margin-top: -10px;')}
-  }
 `;
+
 
 const MessageHeader = styled.div`
   display: flex;
