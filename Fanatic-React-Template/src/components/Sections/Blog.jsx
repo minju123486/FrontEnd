@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 // Components
@@ -14,6 +14,36 @@ export default function Blog() {
   const navigate = useNavigate(); // navigate 함수 사용
 
   const { cookie } = useAuth();
+
+  const [comlist, setComlist] = useState([]);
+
+
+  useEffect(() => {
+      fetchcomlist();
+  }, []);
+
+  const fetchcomlist = async () => {
+    try {
+        const response = await fetch(`${process.env.REACT_APP_Server_IP}/mock_commu/`, {
+            method: 'GET',
+            headers: {
+                "Authorization": `Bearer ${cookie.access_token}`, 
+                'Content-Type': 'application/json'
+            }
+        });
+        const result = await response.json();
+      
+        if (response.ok) {
+          setComlist(result.com || []);
+          console.log(result.com);
+        } 
+        else {
+            console.error(`불러오기 실패 : ${result.message}`);
+        }
+    } catch (error) {
+        console.error('Error fetching date list:', error);
+    }
+};
 
   const goToCommunity = () => {
     if (cookie.access_token) {
@@ -35,64 +65,35 @@ export default function Blog() {
               선후배 간의 친목 활성화를 위한 위치 기반으로 한 커뮤니티 서비스 제공.
             </p>
           </HeaderInfo>
+
           <div className="row textCenter">
-            <div className="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-              <BlogBox
-                title="New Office!"
-                text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor."
-                tag="company"
-                author="Luke Skywalker, 2 days ago"
-                action={() => alert("clicked")}
-              />
-            </div>
-            <div className="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-              <BlogBox
-                title="New Office!"
-                text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor."
-                tag="company"
-                author="Luke Skywalker, 2 days ago"
-                action={() => alert("clicked")}
-              />
-            </div>
-            <div className="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-              <BlogBox
-                title="New Office!"
-                text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor."
-                tag="company"
-                author="Luke Skywalker, 2 days ago"
-                action={() => alert("clicked")}
-              />
-            </div>
+            {comlist.map((data, index) => (
+              <div className="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <BlogBox
+                  title={data.title}
+                  text={data.content}
+                  tag="바로가기 &gt;"
+                  author={data.date}
+                  action={() => alert("clicked")}
+                />
+              </div>  
+            ))}
           </div>
-          <div className="row textCenter">
-            <div className="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-              <BlogBox
-                title="New Office!"
-                text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor."
-                tag="company"
-                author="Luke Skywalker, 2 days ago"
-                action={() => alert("clicked")}
-              />
-            </div>
-            <div className="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-              <BlogBox
-                title="New Office!"
-                text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor."
-                tag="company"
-                author="Luke Skywalker, 2 days ago"
-                action={() => alert("clicked")}
-              />
-            </div>
-            <div className="col-xs-12 col-sm-4 col-md-4 col-lg-4">
-              <BlogBox
-                title="New Office!"
-                text="Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor."
-                tag="company"
-                author="Luke Skywalker, 2 days ago"
-                action={() => alert("clicked")}
-              />
-            </div>
-          </div>
+
+          {/* <div className="row textCenter">
+          {comlist.map((data, index) => (
+              <div className="col-xs-12 col-sm-4 col-md-4 col-lg-4">
+                <BlogBox
+                  title={data[index+3][title]}
+                  text={data[index+3][content]}
+                  tag="바로가기 &gt;"
+                  author={data[index+3][date]}
+                  action={() => alert("clicked")}
+                />
+              </div>  
+            ))}
+          </div> */}
+
           <div className="row flexCenter">
             <div style={{ margin: "50px 0", width: "200px" }}>
               <Fully2Button title="커뮤니티 바로가기 &gt;" action={goToCommunity} background={"white"} color={"black"}/> {/* 커뮤니티 바로가기 버튼 추가 */}

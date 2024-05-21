@@ -19,7 +19,8 @@ export default function BlogBox({ tag, title, text, action, author }) {
 }
 
 const Wrapper = styled.div`
-  width: 100%;
+  width: 333px;
+  height:244px;
   text-align: left;
   padding: 20px 30px;
   margin-top: 30px;
