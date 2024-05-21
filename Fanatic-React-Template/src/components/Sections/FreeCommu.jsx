@@ -15,10 +15,12 @@ const FreeCommu = () => {
     const [currentPosts, setCurrentPosts] = useState([]); // 현재 페이지에 표시할 포스트 목록 상태
     const [allPosts, setAllPosts] = useState([]); // 모든 포스트 목록
     const [searchTerm, setSearchTerm] = useState(''); // 검색어 상태
+    const [isLoading, setIsLoading] = useState(true); // 로딩 상태 추가
 
     useEffect(() => {
         const fetchPosts = async () => {
             try {
+                setIsLoading(true); // 로딩 시작
                 const response = await fetch(`${process.env.REACT_APP_Server_IP}/post_view/`, {
                     method: 'POST',
                     headers: {
@@ -33,6 +35,8 @@ const FreeCommu = () => {
                 }
             } catch (error) {
                 console.error('Error fetching posts:', error);
+            } finally {
+                setIsLoading(false); // 로딩 완료
             }
         };
 
@@ -65,6 +69,7 @@ const FreeCommu = () => {
     const handleSearchSubmit = async () => {
         setCurrentPage(1);
         try {
+            setIsLoading(true); // 로딩 시작
             const response = await fetch(`${process.env.REACT_APP_Server_IP}/search/`, {
                 method: 'POST',
                 headers: {
@@ -82,6 +87,8 @@ const FreeCommu = () => {
             }
         } catch (error) {
             console.error('Error fetching search results:', error);
+        } finally {
+            setIsLoading(false); // 로딩 완료
         }
     };
 
@@ -94,6 +101,10 @@ const handleSearchKeyPress = (e) => {
         handleSearchSubmit();
     }
 };
+
+useEffect(() => {
+    setIsLoading(false); // 페이지 로드가 완료되면 로딩 상태를 false로 설정
+}, [location]);
 
 return (
     <Container>
@@ -111,35 +122,39 @@ return (
             </SearchContainer>
             <WriteButton to="/write">글쓰기</WriteButton>
         </Header>
-        <PostList>
-            {currentPosts.map((post, index) => (
-                <PostCard key={post.id} onClick={() => handlePostClick(post.id)}>
-                    <PostHeader>
-                        <PostAuthorInfo>
-                            <PostAuthorAvatar src={Users} alt="Author Avatar" />
-                            <div>
-                                <PostAuthor>{post.author}</PostAuthor>
-                                <PostDate>{post.year}.{post.month}.{post.day}</PostDate>
-                            </div>
-                        </PostAuthorInfo>
-                        <PostIndex>{(currentPage - 1) * postsPerPage + index + 1}</PostIndex>
-                    </PostHeader>
-                    <PostTitle>{post.title}</PostTitle>
-                    <PostExcerpt dangerouslySetInnerHTML={{ __html: (post.content || '').substring(0, 100) }} />
-                    <PostFooter>
-    <IconContainer>
-        <Icon src={heart} alt="likes" />
-        <IconCount>{post.like}</IconCount>
-    </IconContainer>
-    <IconContainer>
-        <Icon src={watch} alt="views" />
-        <IconCount>{post.watch}</IconCount>
-    </IconContainer>
-    <CommentsCount>댓글수: {post.comment_number}</CommentsCount>
-</PostFooter>
-                </PostCard>
-            ))}
-        </PostList>
+        {isLoading ? (
+            <LoadingMessage>로딩 중...</LoadingMessage> // 로딩 중 메시지 표시
+        ) : (
+            <PostList>
+                {currentPosts.map((post, index) => (
+                    <PostCard key={post.id} onClick={() => handlePostClick(post.id)}>
+                        <PostHeader>
+                            <PostAuthorInfo>
+                                <PostAuthorAvatar src={Users} alt="Author Avatar" />
+                                <div>
+                                    <PostAuthor>{post.author}</PostAuthor>
+                                    <PostDate>{post.year}.{post.month}.{post.day}</PostDate>
+                                </div>
+                            </PostAuthorInfo>
+                            <PostIndex>{(currentPage - 1) * postsPerPage + index + 1}</PostIndex>
+                        </PostHeader>
+                        <PostTitle>{post.title}</PostTitle>
+                        <PostExcerpt dangerouslySetInnerHTML={{ __html: (post.content || '').substring(0, 100) }} />
+                        <PostFooter>
+                            <IconContainer>
+                                <Icon src={heart} alt="likes" />
+                                <IconCount>{post.like}</IconCount>
+                            </IconContainer>
+                            <IconContainer>
+                                <Icon src={watch} alt="views" />
+                                <IconCount>{post.watch}</IconCount>
+                            </IconContainer>
+                            <CommentsCount>댓글수: {post.comment_number}</CommentsCount>
+                        </PostFooter>
+                    </PostCard>
+                ))}
+            </PostList>
+        )}
         <PaginationContainer>
             <Pagination>
                 {Array.from({ length: Math.ceil(allPosts.length / postsPerPage) }, (_, i) => (
@@ -187,6 +202,13 @@ const WriteButton = styled(Link)`
     &:hover {
         background-color: #45a049;
     }
+`;
+
+// LoadingMessage 컴포넌트 추가
+const LoadingMessage = styled.div`
+    font-size: 18px;
+    color: #333;
+    margin-top: 20px;
 `;
 
 const PostList = styled.div`

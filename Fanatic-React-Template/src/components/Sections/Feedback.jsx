@@ -62,6 +62,8 @@ const Feedback = () => {
       navigate(`/feedbacklook/${decodeURIComponent(course_imformation)}`, { state: { date: `${date}`, id: `${thisid}`} });
   };
 
+
+
     
 
     return(
