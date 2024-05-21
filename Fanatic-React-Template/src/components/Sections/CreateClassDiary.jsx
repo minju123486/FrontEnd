@@ -192,7 +192,7 @@ const SubmitButton = styled.button`
 
 const FeedbackContent = styled.div`
   overflow-y: auto;
-  height: 300px;
+  height: 260px;
 `;
 
 const Grayunderline = styled.div`
@@ -205,12 +205,12 @@ const Grayunderline = styled.div`
 
 const FeedbackBox = styled.div`
   width: 850px;
-  height: 280px;
+  height: 300px;
   justify-content: center;
   background-color: #FBFAFA;
   border: 1px solid #ccc;
   border-radius: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   padding: 10px;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 `;
