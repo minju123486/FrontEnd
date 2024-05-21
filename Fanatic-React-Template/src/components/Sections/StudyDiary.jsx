@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from "../Member/AuthContext";
 import backbb from '../../assets/img/study2.jpg';
 import isodaloding from '../../assets/img/loding/isodaloding.png';
-
+import { useParams } from 'react-router-dom';
 
 //useState로 컴포넌트 상태 관리
 const StudyDiary = () => {
@@ -54,6 +54,11 @@ const StudyDiary = () => {
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+    const studydiarylook = (date, thisid) =>{
+      navigate(`/studyDiarylook`, { state: { date: `${date}`, id: `${thisid}`} });
+    };
+
+
 return (
   <ClassroomWrapper>
     <CoursesBox>
@@ -66,8 +71,7 @@ return (
                 <CourseInfo>
                     <DateTitle>일기 일자 : {date}</DateTitle>
                 </CourseInfo>
-                <Button >일기 보기</Button> 
-                {/* onClick={() => studydiarylook(date, id[index])} */}
+                <Button onClick={() => studydiarylook(date, id[index])}>일기 보기</Button> 
             </DateItem>
         ))}
       </DateList>
