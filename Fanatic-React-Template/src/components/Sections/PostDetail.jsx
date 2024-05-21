@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import rehypeRaw from 'rehype-raw';
 import emptyHeart from '../../../src/assets/img/emptyheart.png';
 import heart from '../../../src/assets/img/heart.png';
 import watch from '../../../src/assets/img/watch.png';
@@ -188,7 +191,13 @@ const PostDetail = () => {
                     </Icons>
                 </PostInfo>
             </PostHeader>
-            <Content dangerouslySetInnerHTML={{ __html: post.content }} />
+            <Content>
+                <ReactMarkdown
+                    children={post.content}
+                    remarkPlugins={[remarkGfm]}
+                    rehypePlugins={[rehypeRaw]}
+                />
+            </Content>
             <CommentSection>
                 <CommentForm onSubmit={handleCommentSubmit}>
                     <CommentInput

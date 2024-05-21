@@ -86,6 +86,7 @@ const ChatComponent = ({ chatRoomName, messages, setMessages, inputValue, setInp
 
 export default function Community() {
     const { user, cookie } = useAuth();
+    const [showPopularPosts, setShowPopularPosts] = useState(true);
     const [activeGrade, setActiveGrade] = useState('grade1');
     const [popularPosts, setPopularPosts] = useState([]);
     const [freePosts, setFreePosts] = useState([]);
@@ -102,6 +103,13 @@ export default function Community() {
         grade3: [],
         grade4: []
     });
+
+    const [diaryPosts, setDiaryPosts] = useState([
+        { id: 1, title: "Diary Post 1", author: "Author 1", preview: "Preview content 1", image: ReactImage, like: 10, watch: 50, date: "2023.01.01", comments: 5 },
+        { id: 2, title: "Diary Post 2", author: "Author 2", preview: "Preview content 2", image: ReactImage, like: 20, watch: 60, date: "2023.02.01", comments: 10 },
+        { id: 3, title: "Diary Post 3", author: "Author 3", preview: "Preview content 3", image: ReactImage, like: 30, watch: 70, date: "2023.03.01", comments: 15 },
+        { id: 4, title: "Diary Post 4", author: "Author 4", preview: "Preview content 4", image: ReactImage, like: 40, watch: 80, date: "2023.04.01", comments: 20 },
+    ]);
 
     const handleGradeChange = grade => setActiveGrade(grade);
     
@@ -253,10 +261,16 @@ export default function Community() {
         }
     };
 
+    const handleTabClick = (tab) => {
+        setShowPopularPosts(tab === 'popular');
+    };
+
     return (
         <Container>
-            <CardTitle>인기 게시물</CardTitle>
-            <CardsContainer>
+            <TabsContainer>
+    <Tab active={showPopularPosts} onClick={() => handleTabClick('popular')}>인기 게시물</Tab>
+</TabsContainer>
+<CardsContainer>
     {popularPosts.map(post => (
         <PopularPostCard
             key={post.id}
@@ -389,6 +403,23 @@ const Container = styled.div`
     flex-direction: column;
 `;
 
+const TabsContainer = styled.div`
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+`;
+
+const Tab = styled.div`
+    padding: 10px 20px;
+    cursor: pointer;
+    font-weight: bold;
+    color: ${props => props.active ? '#4CAF50' : 'black'};
+    border-bottom: ${props => props.active ? '2px solid #4CAF50' : 'none'};
+    &:hover {
+        color: #45a049;
+    }
+`;
+
 /* 카드 컨테이너 */
 const CardsContainer = styled.div`
     display: flex;
@@ -459,19 +490,8 @@ const Message = styled.div`
   align-items: ${props => (props.isOwnMessage ? 'flex-end' : 'flex-start')}; // 본인 메시지: 오른쪽 정렬, 다른 사람 메시지: 왼쪽 정렬
   position: relative;
 
-  &::after {
-    content: '';
-    position: absolute;
-    top: 10px;
-    ${props => (props.isOwnMessage ? 'right: -10px;' : 'left: -10px;')} // 본인 메시지: 오른쪽 말풍선 꼬리, 다른 사람 메시지: 왼쪽 말풍선 꼬리
-    width: 0;
-    height: 0;
-    border: 10px solid transparent;
-    border-top-color: ${props => (props.isOwnMessage ? '#FAFAD2' : '#ccffcc')}; // 본인 메시지: 노란색 말풍선 꼬리, 다른 사람 메시지: 초록색 말풍선 꼬리
-    ${props => (props.isOwnMessage ? 'border-right: 0;' : 'border-left: 0;')}
-    ${props => (props.isOwnMessage ? 'margin-top: -10px;' : 'margin-top: -10px;')}
-  }
 `;
+
 
 const MessageHeader = styled.div`
   display: flex;
