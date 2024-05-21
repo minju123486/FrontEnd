@@ -41,7 +41,7 @@ const StudyDiary = () => {
                 setID(result.id || []);
             } 
             else {
-                console.error(`불러오기 실패 : ${result.message}`);
+                console.error(`불러오기 실패11111111111 : ${result.message}`);
             }
         } catch (error) {
             console.error('Error fetching date list:', error);
