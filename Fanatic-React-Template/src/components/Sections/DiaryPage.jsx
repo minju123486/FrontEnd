@@ -546,7 +546,7 @@ const handleCancelUpload = async () => {
       {isModalOpen && (
         <ModalOverlay>
           <Modal>
-            <ModalText>이 일기는 마이페이지에 저장이 됩니다. 마이페이지에도 저장하시겠습니까?</ModalText>
+            <ModalText>이 일기는 마이페이지에 저장이 됩니다. 자유 게시판에도 저장하시겠습니까?</ModalText>
             <ModalButton onClick={handleConfirmUpload}>네</ModalButton>
             <ModalButton onClick={handleCancelUpload}>아니오</ModalButton>
           </Modal>
