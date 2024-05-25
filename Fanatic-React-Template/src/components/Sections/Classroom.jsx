@@ -181,7 +181,7 @@ const Classroom = () => {
                         <CourseInfo>
                             <CourseTitle>{course.course}</CourseTitle>
                             <ProfessorName>{course.professor}</ProfessorName>
-                        </CourseInfo>
+                        </CourseInfo>   
 
                         <Button onClick={() => handleEnroll(course)}>신청</Button>
 

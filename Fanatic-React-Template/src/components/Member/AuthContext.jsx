@@ -11,6 +11,7 @@ export const AuthProvider = ({ children }) => {
   const [accessToken, setAccessToken] = useState(null);
   const [refreshToken, setRefreshToken] = useState(null);
   const [user, setUser] = useState(null);
+  const [user_name, setUsername] = useState(null);
   const [usertype, setUserTpye] = useState(null);
   const [cookie, setCookie, removeCookie] = useCookies(['access_token', 'refresh_token']);
 
@@ -62,6 +63,7 @@ export const AuthProvider = ({ children }) => {
         if (response.ok) {
           const data = await response.json();
           setUser(data.name);
+          setUsername(data.username);
           if(data.usertype === "professor" ? setUserTpye("교수") : setUserTpye("학생"));
         } 
         else {
@@ -78,7 +80,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ isLoggedIn, accessToken, refreshToken, user, usertype, cookie, login, logout, setTokens, userNameGet, onCookie, removeTokens, onCookie24}}>
+    <AuthContext.Provider value={{ isLoggedIn, accessToken, refreshToken, user, user_name, usertype, cookie, login, logout, setTokens, userNameGet, onCookie, removeTokens, onCookie24}}>
       {children}
     </AuthContext.Provider>
   );

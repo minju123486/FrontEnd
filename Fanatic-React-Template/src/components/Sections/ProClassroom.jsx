@@ -13,7 +13,7 @@ const ProClassroom = () => {
     const [showModal, setShowModal] = useState(false);
     const [loding, setLoding] = useState(false);
 
-    const { user, isLoggedIn, cookie} = useAuth();
+    const { user, isLoggedIn, cookie, user_name} = useAuth();
     
 
     const handleFeedback = (course_name, user_name) =>{
@@ -146,14 +146,14 @@ const ProClassroom = () => {
   };
 
   const fetchFeedbackcheck = (course_name) => {
-    fetch(`${process.env.REACT_APP_Server_IP}/feedback_save/`, { //피드백 생성하는 함수 엔드포인트
+    fetch(`${process.env.REACT_APP_Server_IP}/feedback_save/`, { //피드백 생성하는 함수 엔드포인트handleFeedback 
       method: "POST",
       headers: {
         'Content-Type': 'application/json',
         "Authorization": `Bearer ${cookie.access_token}`
       },
       body: JSON.stringify({ 
-        professor_name: user,
+        professor_name: user_name,
         course_name: course_name
       })
       
@@ -232,7 +232,7 @@ return (
                         </CourseInfo>
                         <div>
                             {view === 'myCourses' ? (
-                                <Button onClick={() => view === 'myCourses' ? handleFeedback(course.name, user) : hhh}>
+                                <Button onClick={() => view === 'myCourses' ? handleFeedback(course.name, user_name) : hhh}>
                                     피드백
                                 </Button>
                             ) : (<></>)}

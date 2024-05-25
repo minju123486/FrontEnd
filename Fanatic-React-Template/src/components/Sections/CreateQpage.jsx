@@ -348,7 +348,7 @@ function CreateQPage() {
   const [selectedKeywords, setSelectedKeywords] = useState([]); //선택된 키워드 배열 
   const [check, setCheck] = useState(0);
 
-  const {cookie, user} = useAuth(); 
+  const {cookie, user, user_name} = useAuth(); 
 
   const { course_name } = useParams();
   console.log("course_name:", course_name);
@@ -369,7 +369,7 @@ const fetchQcheck = () => {
         "Authorization": `Bearer ${cookie.access_token}`
       },
       body: JSON.stringify({ 
-        professor_name: user,
+        professor_name: user_name,
         course_name: course_name
       })
       
@@ -403,7 +403,7 @@ const fetchQcheck = () => {
           body: JSON.stringify({ 
             questions: questions,
             course_name: course_name,
-            username: user
+            username: user_name
           })
       });
 
@@ -549,37 +549,39 @@ const fetchQcheck = () => {
   let keyword_list = [];
 
   if (course_name == "파이썬프로그래밍"){
-    keyword_list = [' ', '인터프리터실행하기', '인자전달', '대화형모드', '인터프리터와환경', '소스코드인코딩', '파이썬을계산기로사용하기', 
-    '숫자', 'Text', '리스트', '프로그래밍으로의첫걸음', 'if문', 'for문', 'range()함수', '루프의break와continue문,그리고else절', 'pass문', 
-    'matchStatements', '함수정의하기', '함수정의더보기', '기본인자값', '키워드인자', '특수매개변수', '임의의인자목록', '인자목록언패킹', '람다표현식', 
-    '도큐멘테이션문자열', '함수어노테이션', '막간극:코딩스타일', '리스트더보기', '리스트를스택으로사용하기', '리스트를큐로사용하기', '리스트컴프리헨션',
-     '중첩된리스트컴프리헨션', 'del문', '튜플과시퀀스', '집합', '딕셔너리', '루프테크닉', '조건더보기', '시퀀스와다른형들을비교하기', '모듈더보기',
-      '모듈을스크립트로실행하기', '모듈검색경로', '“컴파일된”파이썬파일', '표준모듈들', 'dir()함수', '패키지', '패키지에서*임포트하기', 
-      '패키지내부간의참조', '여러디렉터리에있는패키지', '장식적인출력포매팅', '포맷문자열리터럴', '문자열format()메서드', '수동문자열포매팅',
-       '예전의문자열포매팅', '파일을읽고쓰기', '파일객체의매소드', 'json으로구조적인데이터를저장하기', '문법에러', '예외', '예외처리하기', 
-       '예외일으키기', '예외연쇄', '사용자정의예외', '뒷정리동작정의하기', '미리정의된뒷정리동작들', 'RaisingandHandlingMultipleUnrelatedExceptions', 
-       'EnrichingExceptionswithNotes', '이름과객체에관한한마디', '파이썬스코프와이름공간', '스코프와이름공간예', '클래스와의첫만남', '클래스정의문법', 
-       '클래스객체', '인스턴스객체', '메서드객체', '클래스와인스턴스변수', '기타주의사항들', '상속', '다중상속', '비공개변수', '잡동사니', '이터레이터',
-        '제너레이터', '제너레이터표현식', '운영체제인터페이스', '파일와일드카드', '명령행인자', '에러출력리디렉션과프로그램종료', '문자열패턴매칭', 
-        '수학', '인터넷액세스', '날짜와시간', '데이터압축', '성능측정', '품질관리', '배터리가포함됩니다', '출력포매팅', '템플릿', 
-        '바이너리데이터레코드배치작업', '다중스레딩', '로깅', '약한참조', '리스트작업도구', '진부동소수점산술', '소개', '가상환경만들기', 
-        'pip로패키지관리하기', '탭완성및히스토리편집', '대화형인터프리터대안', '표현오류', '대화형모드', '에러처리', '실행가능한파이썬스크립트', 
-        '대화형시작파일', '커스터마이제이션모듈'];
+    keyword_list = [' ',
+      'Using the Python Interpreter',
+    'A Brief Introduction to Python',
+    'Other Control Flow Tools',
+    'Data Structure',
+    'Modules',
+    'Input and Output',
+    'Errors and Exceptions',
+    'Classes',
+    'Standard Library Quick Look',
+    'Standard Library Quick Look - Part 2'];
   }
   else if(course_name == "C++프로그래밍"){
-    keyword_list = [' ', '토큰 및 문자 집합', '식별자', '숫자-부울 및 포인터 리터럴', '문자열 및 문자 리터럴', '사용자 정의 리터럴', 'C++ 형식 시스템', 
-    'Lvalue 및 Rvalue', '표준 변환', '기본 제공 형식', '데이터 형식 범위', '선언 및 정의', 'const', 'constexpr', '이니셜라이저',
-     '기본 제공 연산자, 우선 순위 및 결합성', '할당 연산자', '비트 연산자(&,^,|)', '캐스트 연산자()', '쉼표,조건,delete 연산자', 
-     '관계형 연산자(==, !=,>,<,<=,>=)', '시프트 연산자(<<,>>)', '논리 연산자(&&,!,||)', '산술 연산자(+,-,*,/)', 'new 연산자', 
-     '포인터 연산자(.*, ->*)', '증감 연산자(++,--)', '캐스팅', '선택문(if-else문)', '선택문(switch)', '반복문', '범위기반for문', 
-     '네임스페이스', '열거형', 'union', '함수', '함수 오버로드', '연산자 오버로드', '클래스 및 구조체', '멤버 액세스 제어', '생성자', '소멸자', 
-     '상속', '멤버에 대한 포인터', 'this 포인터', '람다식', '원시 포인터', 'const 및 volatile 포인터', '포인터 new 및 delete 연산자', '스마트 포인터',
-      'unique_ptr', 'shared_ptr', 'weak_ptr', '예외처리'];
+    keyword_list = [' ',
+      'String and Character Literals',
+    'arithmetic operators',
+    'Pointer operators',
+    'Selection statements (if-else statements)',
+    'Iteration statements',
+    'Functions',
+    'Function Overloading',
+    'Constructors',
+    'Destructors',
+    'Inheritance',
+    'pointer new and delete operators',
+    'smart pointers',
+    'unique_ptr',
+    'shared_ptr'];
   }
   else if(course_name == "자바프로그래밍"){
-    keyword_list = [' ', '자료형', '배열', '연산자', '조건문', '반복문', '제어문', '클래스 정의', '생성자', '객체 생성', '객체 사용', 
-    '클래스 심화1', '클래스 심화2', '인터페이스', '상속', '오버라이딩', '상속', '포맷팅 기초1', '포맷팅 기초2',
-    '문자열 숫자변환', '문자열 문자처리', '문자열 심화'];
+    keyword_list = [' ','Data Types', 'Arrays', 'Operators', 'Conditional Statements', 'Iteration Statements', 'Control Statements', 'Class Definitions', 'Constructors', 'Creating Objects', 'Using Objects', 
+    'Classes in Depth 1', 'Classes in Depth 2', 'Interfaces', 'Inheritance', 'Overriding', 'Inheritance', 'Formatting Basics 1', 'Formatting Basics 2',
+    'String to Numeric Conversion', 'String Characterization', 'String Advanced'];
   };
 
 
